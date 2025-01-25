@@ -1,5 +1,5 @@
 /**
- * @package services-settings
+ * @sw-package fundamentals@discovery
  */
 import { mount } from '@vue/test-utils';
 
@@ -42,7 +42,7 @@ async function createWrapper(privileges = []) {
                     'sw-icon': {
                         template: '<div></div>',
                     },
-                    'sw-checkbox-field': {
+                    'mt-checkbox': {
                         template: '<div class="checkbox"></div>',
                     },
                     'router-link': true,

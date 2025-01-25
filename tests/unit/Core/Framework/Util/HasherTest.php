@@ -12,7 +12,7 @@ use Shopware\Core\Framework\Util\UtilException;
 /**
  * @internal
  */
-#[Package('core')]
+#[Package('framework')]
 #[CoversClass(Hasher::class)]
 class HasherTest extends TestCase
 {
@@ -26,6 +26,12 @@ class HasherTest extends TestCase
         }
 
         static::assertSame($expectedHash, $result);
+    }
+
+    public function testHashThrowsExceptionIfProvidedDataContainsMalformedUtf8(): void
+    {
+        $this->expectException(UtilException::class);
+        Hasher::hash(["\xB1\x31"]);
     }
 
     #[DataProvider('hashProvider')]

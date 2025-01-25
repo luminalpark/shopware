@@ -9,7 +9,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityCustomFieldsTrait;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityIdTrait;
 use Shopware\Core\Framework\Log\Package;
 
-#[Package('buyers-experience')]
+#[Package('discovery')]
 class MediaFolderConfigurationEntity extends Entity
 {
     use EntityCustomFieldsTrait;
@@ -17,36 +17,50 @@ class MediaFolderConfigurationEntity extends Entity
 
     /**
      * @var MediaFolderCollection
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $mediaFolders;
 
     /**
      * @var bool
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $createThumbnails;
 
     /**
      * @var bool
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $keepAspectRatio;
 
     /**
      * @var int
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $thumbnailQuality;
 
     /**
      * @var bool
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $private;
 
     /**
      * @var bool|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $noAssociation;
 
     /**
      * @var MediaThumbnailSizeCollection|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $mediaThumbnailSizes;
 
@@ -54,6 +68,8 @@ class MediaFolderConfigurationEntity extends Entity
      * @internal
      *
      * @var string|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $mediaThumbnailSizesRo;
 

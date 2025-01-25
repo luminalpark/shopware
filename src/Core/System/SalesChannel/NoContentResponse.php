@@ -5,11 +5,13 @@ namespace Shopware\Core\System\SalesChannel;
 use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\Framework\Struct\ArrayStruct;
 
-#[Package('core')]
+#[Package('framework')]
 class NoContentResponse extends StoreApiResponse
 {
     /**
      * @var ArrayStruct<string, mixed>
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $object;
 

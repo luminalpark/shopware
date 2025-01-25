@@ -1,5 +1,5 @@
 /*
- * @package inventory
+ * @sw-package inventory
  */
 
 import { searchRankingPoint } from 'src/app/service/search-ranking.service';
@@ -108,8 +108,9 @@ export default {
 
             productCriteria.setTerm(this.term);
             productCriteria.addSorting(Criteria.sort(this.sortBy, this.sortDirection, this.naturalSorting));
-            productCriteria.addAssociation('cover');
+            productCriteria.addAssociation('cover.media');
             productCriteria.addAssociation('manufacturer');
+            productCriteria.addAssociation('tax');
 
             this.filterCriteria.forEach((filter) => {
                 productCriteria.addFilter(filter);

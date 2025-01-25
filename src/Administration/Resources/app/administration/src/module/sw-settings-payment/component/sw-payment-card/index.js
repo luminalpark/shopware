@@ -2,7 +2,7 @@ import template from './sw-payment-card.html.twig';
 import './sw-payment-card.scss';
 
 /**
- * @package checkout
+ * @sw-package checkout
  */
 // eslint-disable-next-line sw-deprecation-rules/private-feature-declarations
 export default {
@@ -28,7 +28,11 @@ export default {
     },
 
     methods: {
-        async setPaymentMethodActive(active) {
+        setPaymentMethodActive(active) {
+            if (this.paymentMethod.active === active) {
+                return;
+            }
+
             this.paymentMethod.active = active;
 
             this.$emit('set-payment-active', this.paymentMethod);

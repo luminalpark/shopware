@@ -5,11 +5,13 @@ namespace Shopware\Core\System\SalesChannel\Api;
 use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\System\SalesChannel\SalesChannelException;
 
-#[Package('core')]
+#[Package('framework')]
 class ResponseFields
 {
     /**
      * @var array<mixed>|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $includes;
 

@@ -10,9 +10,9 @@ use Shopware\Core\Framework\Util\Filesystem;
 /**
  * @internal
  *
- * @phpstan-import-type App from \Shopware\Core\Framework\App\ActiveAppsLoader
+ * @phpstan-import-type App from ActiveAppsLoader
  */
-#[Package('core')]
+#[Package('framework')]
 class NoDatabaseSourceResolver
 {
     /**

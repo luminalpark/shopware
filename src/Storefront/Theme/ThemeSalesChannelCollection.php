@@ -8,11 +8,13 @@ use Shopware\Core\Framework\Struct\Collection;
 /**
  * @extends Collection<ThemeSalesChannel>
  */
-#[Package('storefront')]
+#[Package('framework')]
 class ThemeSalesChannelCollection extends Collection
 {
     /**
      * @var ThemeSalesChannel[]
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $elements = [];
 

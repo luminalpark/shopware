@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import state from 'src/module/sw-settings-shipping/page/sw-settings-shipping-detail/state';
 
 /**
- * @package checkout
+ * @sw-package checkout
  */
 
 Shopware.State.registerModule('swShippingDetail', state);
@@ -58,6 +58,7 @@ describe('module/sw-settings-shipping/component/sw-settings-shipping-price-matri
                         'sw-data-grid-inline-edit': true,
                         'sw-data-grid-skeleton': true,
                         'sw-help-text': true,
+                        'sw-provide': true,
                     },
                     mocks: {
                         $te: () => false,
@@ -93,6 +94,18 @@ describe('module/sw-settings-shipping/component/sw-settings-shipping-price-matri
             },
         );
     };
+
+    async function wrapperWithAllPrices() {
+        const wrapper = await createWrapper();
+
+        wrapper.findAllComponents('.sw-settings-shipping-price-matrix').forEach((matrix) => {
+            matrix.vm.updateShowAllPrices();
+        });
+
+        await flushPromises();
+
+        return wrapper;
+    }
 
     beforeEach(async () => {
         Shopware.State.commit('swShippingDetail/setCurrencies', [
@@ -327,8 +340,7 @@ describe('module/sw-settings-shipping/component/sw-settings-shipping-price-matri
     });
 
     it('should show all rules with matching prices', async () => {
-        const wrapper = await createWrapper();
-        await flushPromises();
+        const wrapper = await wrapperWithAllPrices();
 
         const rowOneQuantityStart = wrapper.find('.sw-data-grid__row--0 .sw-data-grid__cell--quantityStart input');
         const rowOneQuantityEnd = wrapper.find('.sw-data-grid__row--0 .sw-data-grid__cell--quantityEnd input');
@@ -423,8 +435,7 @@ describe('module/sw-settings-shipping/component/sw-settings-shipping-price-matri
             shippingMethod.prices = shippingMethod.prices.filter((price) => price.id !== id);
         };
 
-        const wrapper = await createWrapper();
-        await flushPromises();
+        const wrapper = await wrapperWithAllPrices();
 
         const rowOneQuantityStart = wrapper.find('.sw-data-grid__row--0 .sw-data-grid__cell--quantityStart input');
         const rowOneQuantityEnd = wrapper.find('.sw-data-grid__row--0 .sw-data-grid__cell--quantityEnd input');
@@ -446,8 +457,7 @@ describe('module/sw-settings-shipping/component/sw-settings-shipping-price-matri
     });
 
     it('all rules should have the right min and max values', async () => {
-        const wrapper = await createWrapper();
-        await flushPromises();
+        const wrapper = await wrapperWithAllPrices();
 
         const rowOneQuantityStart = wrapper.find('.sw-data-grid__row--0 .sw-data-grid__cell--quantityStart input');
         const rowOneQuantityEnd = wrapper.find('.sw-data-grid__row--0 .sw-data-grid__cell--quantityEnd input');
@@ -468,8 +478,7 @@ describe('module/sw-settings-shipping/component/sw-settings-shipping-price-matri
     });
 
     it('should add a new pricing rule and change the values', async () => {
-        const wrapper = await createWrapper();
-        await flushPromises();
+        const wrapper = await wrapperWithAllPrices();
 
         const addNewPriceRuleButton = wrapper.find('.sw-settings-shipping-price-matrix__top-container .sw-button__content');
         expect(addNewPriceRuleButton.text()).toBe('sw-settings-shipping.priceMatrix.addNewShippingPrice');
@@ -498,8 +507,7 @@ describe('module/sw-settings-shipping/component/sw-settings-shipping-price-matri
     });
 
     it('should delete the last pricing rule and change the values', async () => {
-        const wrapper = await createWrapper();
-        await flushPromises();
+        const wrapper = await wrapperWithAllPrices();
 
         let rowOneQuantityStart = wrapper.find('.sw-data-grid__row--0 .sw-data-grid__cell--quantityStart input');
         let rowOneQuantityEnd = wrapper.find('.sw-data-grid__row--0 .sw-data-grid__cell--quantityEnd input');
@@ -605,8 +613,7 @@ describe('module/sw-settings-shipping/component/sw-settings-shipping-price-matri
             shippingMethod.prices = shippingMethod.prices.filter((price) => price.id !== id);
         };
 
-        const wrapper = await createWrapper();
-        await flushPromises();
+        const wrapper = await wrapperWithAllPrices();
 
         let rowOneQuantityStart = wrapper.find('.sw-data-grid__row--0 .sw-data-grid__cell--quantityStart input');
         let rowOneQuantityEnd = wrapper.find('.sw-data-grid__row--0 .sw-data-grid__cell--quantityEnd input');

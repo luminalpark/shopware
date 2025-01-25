@@ -4,7 +4,7 @@ import template from './sw-inherit-wrapper.html.twig';
 const { Component } = Shopware;
 
 /**
- * @package admin
+ * @sw-package framework
  *
  * @private
  * @description Wrapper for inherited data with toggle
@@ -172,8 +172,8 @@ Component.register('sw-inherit-wrapper', {
                 return this.customInheritationCheckFunction(this.value);
             }
 
-            // if association
-            if (this.isAssociation && this.value) {
+            // if association or array
+            if ((this.isAssociation || Array.isArray(this.value)) && this.value) {
                 return this.value.length <= 0;
             }
 
@@ -254,7 +254,7 @@ Component.register('sw-inherit-wrapper', {
                 return;
             }
 
-            if (!newValue) {
+            if (!newValue || (Array.isArray(newValue) && newValue.length <= 0)) {
                 this.forceInheritanceRemove = true;
             }
 

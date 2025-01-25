@@ -11,21 +11,27 @@ use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Symfony\Component\HttpFoundation\Request;
 
-#[Package('buyers-experience')]
+#[Package('discovery')]
 class CmsPageLoadedEvent extends NestedEvent implements ShopwareSalesChannelEvent
 {
     /**
      * @var Request
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $request;
 
     /**
      * @var CmsPageCollection
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $result;
 
     /**
      * @var SalesChannelContext
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $salesChannelContext;
 

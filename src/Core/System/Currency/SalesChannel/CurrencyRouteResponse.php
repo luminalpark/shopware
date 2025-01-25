@@ -6,11 +6,13 @@ use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\System\Currency\CurrencyCollection;
 use Shopware\Core\System\SalesChannel\StoreApiResponse;
 
-#[Package('buyers-experience')]
+#[Package('fundamentals@framework')]
 class CurrencyRouteResponse extends StoreApiResponse
 {
     /**
      * @var CurrencyCollection
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $object;
 

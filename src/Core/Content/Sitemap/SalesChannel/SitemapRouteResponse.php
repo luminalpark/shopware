@@ -6,11 +6,13 @@ use Shopware\Core\Content\Sitemap\Struct\SitemapCollection;
 use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\System\SalesChannel\StoreApiResponse;
 
-#[Package('services-settings')]
+#[Package('discovery')]
 class SitemapRouteResponse extends StoreApiResponse
 {
     /**
      * @var SitemapCollection
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $object;
 

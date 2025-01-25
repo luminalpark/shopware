@@ -6,7 +6,7 @@ namespace Shopware\Core\Framework\Util;
 
 use Shopware\Core\Framework\Log\Package;
 
-#[Package('core')]
+#[Package('framework')]
 class Hasher
 {
     public const ALGO = 'xxh128';
@@ -17,7 +17,11 @@ class Hasher
     public static function hash(mixed $data, string $algo = self::ALGO): string
     {
         if (!\is_string($data)) {
-            $data = \json_encode($data, \JSON_THROW_ON_ERROR);
+            try {
+                $data = \json_encode($data, \JSON_THROW_ON_ERROR);
+            } catch (\JsonException $e) {
+                throw UtilException::invalidJson($e);
+            }
         }
 
         return \hash($algo, $data);

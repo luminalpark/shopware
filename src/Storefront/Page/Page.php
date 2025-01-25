@@ -9,31 +9,41 @@ use Shopware\Core\Framework\Struct\Struct;
 use Shopware\Storefront\Pagelet\Footer\FooterPagelet;
 use Shopware\Storefront\Pagelet\Header\HeaderPagelet;
 
-#[Package('storefront')]
+#[Package('framework')]
 class Page extends Struct
 {
     /**
      * @var HeaderPagelet|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $header;
 
     /**
      * @var FooterPagelet|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $footer;
 
     /**
      * @var ShippingMethodCollection
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $salesChannelShippingMethods;
 
     /**
      * @var PaymentMethodCollection
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $salesChannelPaymentMethods;
 
     /**
      * @var MetaInformation
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $metaInformation;
 

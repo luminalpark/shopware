@@ -12,10 +12,14 @@ use Shopware\Core\Checkout\Document\Aggregate\DocumentBaseConfig\DocumentBaseCon
 use Shopware\Core\Checkout\Document\Aggregate\DocumentBaseConfig\DocumentBaseConfigEntity;
 use Shopware\Core\Checkout\Document\Aggregate\DocumentBaseConfigSalesChannel\DocumentBaseConfigSalesChannelCollection;
 use Shopware\Core\Checkout\Document\Aggregate\DocumentBaseConfigSalesChannel\DocumentBaseConfigSalesChannelEntity;
+use Shopware\Core\Checkout\Document\DocumentCollection;
+use Shopware\Core\Checkout\Document\DocumentEntity;
+use Shopware\Core\Checkout\Document\FileGenerator\FileTypes;
 use Shopware\Core\Checkout\Document\Renderer\DocumentRendererConfig;
 use Shopware\Core\Checkout\Document\Renderer\InvoiceRenderer;
 use Shopware\Core\Checkout\Document\Renderer\RenderedDocument;
 use Shopware\Core\Checkout\Document\Service\DocumentConfigLoader;
+use Shopware\Core\Checkout\Document\Service\DocumentFileRendererRegistry;
 use Shopware\Core\Checkout\Document\Struct\DocumentGenerateOperation;
 use Shopware\Core\Checkout\Document\Twig\DocumentTemplateRenderer;
 use Shopware\Core\Checkout\Order\Aggregate\OrderAddress\OrderAddressEntity;
@@ -31,6 +35,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\EntitySearchResult;
 use Shopware\Core\Framework\DataAbstractionLayer\TaxFreeConfig;
+use Shopware\Core\Framework\Feature;
 use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\System\Country\CountryEntity;
@@ -46,7 +51,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  * @phpstan-type OrderSettings array{accountType: string, isCountryCompanyTaxFree: bool, setOrderDelivery: bool, setShippingCountry: bool, setEuCountry: bool}
  * @phpstan-type InvoiceConfig array{displayAdditionalNoteDelivery: bool, deliveryCountries: array<string>}
  */
-#[Package('checkout')]
+#[Package('after-sales')]
 #[CoversClass(InvoiceRenderer::class)]
 class InvoiceRendererTest extends TestCase
 {
@@ -99,6 +104,7 @@ class InvoiceRendererTest extends TestCase
             $this->createMock(NumberRangeValueGeneratorInterface::class),
             '',
             $connectionMock,
+            $this->createMock(DocumentFileRendererRegistry::class),
         );
 
         $operations = [
@@ -114,6 +120,10 @@ class InvoiceRendererTest extends TestCase
         static::assertCount(0, $result->getErrors());
         static::assertArrayHasKey($orderId, $successResults);
         static::assertInstanceOf(RenderedDocument::class, $successResults[$orderId]);
+
+        static::assertNotNull($successResults[$orderId]->getOrder());
+        static::assertNotNull($successResults[$orderId]->getContext());
+        static::assertSame($successResults[$orderId]->getTemplate(), '@Framework/documents/invoice.html.twig');
 
         if ($expectedResult) {
             static::assertTrue($successResults[$orderId]->getConfig()['intraCommunityDelivery']);
@@ -184,6 +194,7 @@ class InvoiceRendererTest extends TestCase
             $this->createMock(NumberRangeValueGeneratorInterface::class),
             '',
             $connectionMock,
+            $this->createMock(DocumentFileRendererRegistry::class),
         );
 
         $operations = [
@@ -193,6 +204,71 @@ class InvoiceRendererTest extends TestCase
         ];
 
         $invoiceRenderer->render($operations, $context, new DocumentRendererConfig());
+    }
+
+    public function testDoNotForceDocumentCreation(): void
+    {
+        Feature::skipTestIfInActive('v6.7.0.0', $this);
+
+        $context = Context::createDefaultContext();
+
+        $document = new DocumentEntity();
+        $document->setId(Uuid::randomHex());
+
+        $order = $this->createOrder([
+            'accountType' => CustomerEntity::ACCOUNT_TYPE_PRIVATE,
+            'isCountryCompanyTaxFree' => true,
+            'setOrderDelivery' => true,
+            'setShippingCountry' => true,
+            'setEuCountry' => true,
+        ]);
+
+        $order->setDocuments(new DocumentCollection([$document]));
+
+        $orderId = $order->getId();
+        $orderCollection = new OrderCollection([$order]);
+        $orderSearchResult = new EntitySearchResult(OrderDefinition::ENTITY_NAME, 1, $orderCollection, null, new Criteria(), $context);
+
+        $connectionMock = $this->createMock(Connection::class);
+        $connectionMock->method('fetchAllAssociative')->willReturn([
+            [
+                'language_id' => Defaults::LANGUAGE_SYSTEM,
+                'ids' => $orderId,
+            ],
+        ]);
+
+        $orderRepositoryMock = $this->createMock(EntityRepository::class);
+        $orderRepositoryMock->method('search')->willReturn($orderSearchResult);
+
+        $documentTemplateRenderer = $this->createMock(DocumentTemplateRenderer::class);
+        $documentTemplateRenderer->expects(static::never())->method('render');
+
+        $documentConfigLoaderMock = new DocumentConfigLoader($this->createMock(EntityRepository::class));
+
+        $invoiceRenderer = new InvoiceRenderer(
+            $orderRepositoryMock,
+            $documentConfigLoaderMock,
+            $this->createMock(EventDispatcherInterface::class),
+            $documentTemplateRenderer,
+            $this->createMock(NumberRangeValueGeneratorInterface::class),
+            '',
+            $connectionMock,
+            $this->createMock(DocumentFileRendererRegistry::class),
+        );
+
+        $operations = [
+            $orderId => new DocumentGenerateOperation(
+                $orderId,
+                FileTypes::PDF,
+                ['forceDocumentCreation' => false],
+            ),
+        ];
+
+        $result = $invoiceRenderer->render($operations, $context, new DocumentRendererConfig());
+
+        $successResults = $result->getSuccess();
+
+        static::assertCount(0, $successResults);
     }
 
     public static function configDataProvider(): \Generator
@@ -207,6 +283,7 @@ class InvoiceRendererTest extends TestCase
             ],
             'config' => [
                 'displayAdditionalNoteDelivery' => true,
+                'fileTypes' => ['pdf', 'html'],
             ],
             'expectedResult' => true,
         ];
@@ -221,6 +298,7 @@ class InvoiceRendererTest extends TestCase
             ],
             'config' => [
                 'displayAdditionalNoteDelivery' => true,
+                'fileTypes' => ['pdf', 'html'],
             ],
             'expectedResult' => false,
         ];
@@ -235,6 +313,7 @@ class InvoiceRendererTest extends TestCase
             ],
             'config' => [
                 'displayAdditionalNoteDelivery' => true,
+                'fileTypes' => ['pdf', 'html'],
             ],
             'expectedResult' => false,
         ];
@@ -249,6 +328,7 @@ class InvoiceRendererTest extends TestCase
             ],
             'config' => [
                 'displayAdditionalNoteDelivery' => true,
+                'fileTypes' => ['pdf', 'html'],
             ],
             'expectedResult' => false,
         ];
@@ -263,6 +343,7 @@ class InvoiceRendererTest extends TestCase
             ],
             'config' => [
                 'displayAdditionalNoteDelivery' => false,
+                'fileTypes' => ['pdf', 'html'],
             ],
             'expectedResult' => false,
         ];
@@ -277,6 +358,7 @@ class InvoiceRendererTest extends TestCase
             ],
             'config' => [
                 'displayAdditionalNoteDelivery' => true,
+                'fileTypes' => ['pdf', 'html'],
             ],
             'expectedResult' => false,
         ];
@@ -291,6 +373,7 @@ class InvoiceRendererTest extends TestCase
             ],
             'config' => [
                 'displayAdditionalNoteDelivery' => true,
+                'fileTypes' => ['pdf', 'html'],
             ],
             'expectedResult' => false,
         ];

@@ -7,11 +7,13 @@ use Shopware\Core\Framework\Log\Package;
 /**
  * @internal
  */
-#[Package('core')]
+#[Package('framework')]
 class ExceptionHandlerRegistry
 {
     /**
      * @var array<int, list<ExceptionHandlerInterface>>
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $exceptionHandlers = [];
 

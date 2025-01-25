@@ -5,11 +5,13 @@ namespace Shopware\Storefront\Pagelet;
 use Shopware\Core\Content\Category\Tree\Tree;
 use Shopware\Core\Framework\Log\Package;
 
-#[Package('storefront')]
+#[Package('framework')]
 abstract class NavigationPagelet extends Pagelet
 {
     /**
      * @var Tree|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $navigation;
 

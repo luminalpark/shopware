@@ -6,21 +6,27 @@ use Shopware\Core\Framework\DataAbstractionLayer\DefinitionInstanceRegistry;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityDefinition;
 use Shopware\Core\Framework\Log\Package;
 
-#[Package('core')]
+#[Package('framework')]
 abstract class AssociationField extends Field
 {
     /**
      * @var string
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $referenceClass;
 
     /**
      * @var EntityDefinition
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $referenceDefinition;
 
     /**
      * @var string
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $referenceField;
 

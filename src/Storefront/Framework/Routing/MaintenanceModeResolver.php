@@ -10,16 +10,20 @@ use Shopware\Core\SalesChannelRequest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-#[Package('storefront')]
+#[Package('framework')]
 class MaintenanceModeResolver
 {
     /**
      * @var RequestStack
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $requestStack;
 
     /**
      * @var CoreMaintenanceModeResolver
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $maintenanceModeResolver;
 

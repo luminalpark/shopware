@@ -7,11 +7,13 @@ use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\System\Country\CountryCollection;
 use Shopware\Core\System\SalesChannel\StoreApiResponse;
 
-#[Package('buyers-experience')]
+#[Package('fundamentals@discovery')]
 class CountryRouteResponse extends StoreApiResponse
 {
     /**
      * @var EntitySearchResult<CountryCollection>
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $object;
 

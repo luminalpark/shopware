@@ -1,5 +1,5 @@
 /**
- * @package services-settings
+ * @sw-package framework
  */
 import { POLL_BACKGROUND_INTERVAL, POLL_FOREGROUND_INTERVAL } from 'src/core/worker/worker-notification-listener';
 import template from './sw-settings-cache-index.html.twig';
@@ -15,6 +15,7 @@ export default {
 
     inject: [
         'cacheApiService',
+        'feature',
     ],
 
     mixins: [

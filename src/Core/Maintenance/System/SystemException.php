@@ -12,8 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @deprecated tag:v6.7.0 - Will be removed, use Shopware\Core\Maintenance\MaintenanceException instead
+ *
+ * @phpstan-ignore shopware.internalClass
  */
-#[Package('core')]
+#[Package('framework')]
 class SystemException extends HttpException
 {
     final public const MAINTENANCE_SYMFONY_CONSOLE_APPLICATION_NOT_FOUND = 'MAINTENANCE__SYMFONY_CONSOLE_APPLICATION_NOT_FOUND';

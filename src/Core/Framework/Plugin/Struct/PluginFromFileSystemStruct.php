@@ -6,26 +6,34 @@ use Composer\Package\CompletePackageInterface;
 use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\Framework\Struct\Struct;
 
-#[Package('core')]
+#[Package('framework')]
 class PluginFromFileSystemStruct extends Struct
 {
     /**
      * @var string
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $baseClass;
 
     /**
      * @var string
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $path;
 
     /**
      * @var bool
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $managedByComposer;
 
     /**
      * @var CompletePackageInterface
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $composerPackage;
 

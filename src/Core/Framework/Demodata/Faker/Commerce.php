@@ -8,11 +8,13 @@ use Shopware\Core\Framework\Log\Package;
 /**
  * @internal
  */
-#[Package('core')]
+#[Package('framework')]
 class Commerce extends FakerCommerce
 {
     /**
      * @var array<string, array<string>>
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected static $productName = [
         'adjective' => ['Small', 'Ergonomic', 'Rustic', 'Intelligent', 'Gorgeous', 'Incredible', 'Fantastic', 'Practical', 'Sleek', 'Awesome', 'Enormous', 'Mediocre', 'Synergistic', 'Heavy Duty', 'Lightweight', 'Aerodynamic', 'Durable'],

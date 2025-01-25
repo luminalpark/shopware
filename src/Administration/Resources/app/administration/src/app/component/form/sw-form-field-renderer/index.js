@@ -3,7 +3,7 @@ import template from './sw-form-field-renderer.html.twig';
 const { Component, Mixin } = Shopware;
 const { types } = Shopware.Utils;
 /**
- * @package admin
+ * @sw-package framework
  *
  * @private
  * @status ready
@@ -234,6 +234,9 @@ Component.register('sw-form-field-renderer', {
 
                 this.config.options.forEach((option) => {
                     const translation = this.getTranslations('options', option, [labelProperty]);
+                    if (!translation.label) {
+                        translation.label = option.value;
+                    }
                     // Merge original option with translation
                     const translatedOption = { ...option, ...translation };
                     options.push(translatedOption);

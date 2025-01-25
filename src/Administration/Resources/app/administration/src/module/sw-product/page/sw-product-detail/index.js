@@ -1,5 +1,5 @@
 /*
- * @package inventory
+ * @sw-package inventory
  */
 
 import EntityValidationService from 'src/app/service/entity-validation.service';
@@ -181,6 +181,7 @@ export default {
             const criteria = new Criteria(1, 25);
 
             criteria.getAssociation('media').addSorting(Criteria.sort('position', 'ASC'));
+            criteria.addAssociation('media.media');
 
             criteria.getAssociation('properties').addSorting(Criteria.sort('name', 'ASC', true));
 
@@ -200,7 +201,7 @@ export default {
                 .addAssociation('options.group');
 
             criteria
-                .addAssociation('cover')
+                .addAssociation('cover.media')
                 .addAssociation('categories')
                 .addAssociation('visibilities.salesChannel')
                 .addAssociation('options')

@@ -6,6 +6,7 @@ use Doctrine\DBAL\Connection;
 use Shopware\Core\Checkout\Document\DocumentException;
 use Shopware\Core\Checkout\Document\Event\InvoiceOrdersEvent;
 use Shopware\Core\Checkout\Document\Service\DocumentConfigLoader;
+use Shopware\Core\Checkout\Document\Service\DocumentFileRendererRegistry;
 use Shopware\Core\Checkout\Document\Struct\DocumentGenerateOperation;
 use Shopware\Core\Checkout\Document\Twig\DocumentTemplateRenderer;
 use Shopware\Core\Checkout\Order\OrderCollection;
@@ -13,6 +14,7 @@ use Shopware\Core\Checkout\Order\OrderEntity;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
+use Shopware\Core\Framework\Feature;
 use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\Framework\Plugin\Exception\DecorationPatternException;
 use Shopware\Core\System\Language\LanguageEntity;
@@ -20,7 +22,7 @@ use Shopware\Core\System\Locale\LocaleEntity;
 use Shopware\Core\System\NumberRange\ValueGenerator\NumberRangeValueGeneratorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-#[Package('checkout')]
+#[Package('after-sales')]
 final class InvoiceRenderer extends AbstractDocumentRenderer
 {
     public const TYPE = 'invoice';
@@ -35,7 +37,8 @@ final class InvoiceRenderer extends AbstractDocumentRenderer
         private readonly DocumentTemplateRenderer $documentTemplateRenderer,
         private readonly NumberRangeValueGeneratorInterface $numberRangeValueGenerator,
         private readonly string $rootDir,
-        private readonly Connection $connection
+        private readonly Connection $connection,
+        private readonly DocumentFileRendererRegistry $fileRendererRegistry,
     ) {
     }
 
@@ -61,7 +64,8 @@ final class InvoiceRenderer extends AbstractDocumentRenderer
         $chunk = $this->getOrdersLanguageId(array_values($ids), $context->getVersionId(), $this->connection);
 
         foreach ($chunk as ['language_id' => $languageId, 'ids' => $ids]) {
-            $criteria = OrderDocumentCriteriaFactory::create(explode(',', (string) $ids), $rendererConfig->deepLinkCode);
+            $criteria = OrderDocumentCriteriaFactory::create(explode(',', (string) $ids), $rendererConfig->deepLinkCode, self::TYPE);
+
             $context = $context->assign([
                 'languageIdChain' => array_values(array_unique(array_filter([$languageId, ...$languageIdChain]))),
             ]);
@@ -83,6 +87,11 @@ final class InvoiceRenderer extends AbstractDocumentRenderer
 
                     /** @var DocumentGenerateOperation $operation */
                     $operation = $operations[$orderId];
+
+                    $forceDocumentCreation = $operation->getConfig()['forceDocumentCreation'] ?? true;
+                    if (!$forceDocumentCreation && $order->getDocuments()?->first()) {
+                        continue;
+                    }
 
                     $config = clone $this->documentConfigLoader->load(self::TYPE, $order->getSalesChannelId(), $context);
 
@@ -108,6 +117,7 @@ final class InvoiceRenderer extends AbstractDocumentRenderer
                     $operation->setOrderVersionId($this->orderRepository->createVersion($orderId, $context, 'document'));
 
                     if ($operation->isStatic()) {
+                        // @deprecated tag:v6.7.0 - html argument will be removed
                         $doc = new RenderedDocument('', $number, $config->buildName(), $operation->getFileType(), $config->jsonSerialize());
                         $result->addSuccess($orderId, $doc);
 
@@ -123,19 +133,22 @@ final class InvoiceRenderer extends AbstractDocumentRenderer
                     /** @var LocaleEntity $locale */
                     $locale = $language->getLocale();
 
-                    $html = $this->documentTemplateRenderer->render(
-                        $template,
-                        [
-                            'order' => $order,
-                            'config' => $config,
-                            'rootDir' => $this->rootDir,
-                            'context' => $context,
-                        ],
-                        $context,
-                        $order->getSalesChannelId(),
-                        $order->getLanguageId(),
-                        $locale->getCode()
-                    );
+                    $html = '';
+                    if (!Feature::isActive('v6.7.0.0')) {
+                        $html = $this->documentTemplateRenderer->render(
+                            $template,
+                            [
+                                'order' => $order,
+                                'config' => $config,
+                                'rootDir' => $this->rootDir,
+                                'context' => $context,
+                            ],
+                            $context,
+                            $order->getSalesChannelId(),
+                            $order->getLanguageId(),
+                            $locale->getCode(),
+                        );
+                    }
 
                     $doc = new RenderedDocument(
                         $html,
@@ -144,6 +157,14 @@ final class InvoiceRenderer extends AbstractDocumentRenderer
                         $operation->getFileType(),
                         $config->jsonSerialize(),
                     );
+
+                    $doc->setTemplate($template);
+                    $doc->setOrder($order);
+                    $doc->setContext($context);
+
+                    if (Feature::isActive('v6.7.0.0')) {
+                        $doc->setContent($this->fileRendererRegistry->render($doc));
+                    }
 
                     $result->addSuccess($orderId, $doc);
                 } catch (\Throwable $exception) {

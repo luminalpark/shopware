@@ -9,26 +9,34 @@ use Shopware\Core\Framework\Event\GenericEvent;
 use Shopware\Core\Framework\Event\NestedEvent;
 use Shopware\Core\Framework\Log\Package;
 
-#[Package('core')]
+#[Package('framework')]
 class EntityAggregationResultLoadedEvent extends NestedEvent implements GenericEvent
 {
     /**
      * @var AggregationResultCollection
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $result;
 
     /**
      * @var EntityDefinition
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $definition;
 
     /**
      * @var string
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $name;
 
     /**
      * @var Context
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $context;
 

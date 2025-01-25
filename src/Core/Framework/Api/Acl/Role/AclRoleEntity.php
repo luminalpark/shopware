@@ -9,38 +9,50 @@ use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\System\Integration\IntegrationCollection;
 use Shopware\Core\System\User\UserCollection;
 
-#[Package('core')]
+#[Package('framework')]
 class AclRoleEntity extends Entity
 {
     use EntityIdTrait;
 
     /**
      * @var string
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $name;
 
     /**
      * @var string|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $description;
 
     /**
      * @var array
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $privileges = [];
 
     /**
      * @var UserCollection|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $users;
 
     /**
      * @var AppEntity|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $app;
 
     /**
      * @var IntegrationCollection|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $integrations;
 

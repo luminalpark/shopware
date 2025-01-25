@@ -1,5 +1,5 @@
 /**
- * @package admin
+ * @sw-package framework
  */
 
 import { mount } from '@vue/test-utils';
@@ -11,8 +11,9 @@ import 'src/app/component/form/field-base/sw-base-field';
 import 'src/app/component/base/sw-icon';
 import 'src/app/component/form/field-base/sw-field-error';
 import 'src/app/filter/unicode-uri';
+import { ref } from 'vue';
 
-async function createWrapper(additionalOptions = {}) {
+async function createWrapper({ provide, ...additionalOptions } = {}) {
     return mount(await wrapTestComponent('sw-url-field-deprecated', { sync: true }), {
         global: {
             stubs: {
@@ -35,6 +36,7 @@ async function createWrapper(additionalOptions = {}) {
             },
             provide: {
                 validationService: {},
+                ...provide,
             },
         },
         ...additionalOptions,
@@ -250,5 +252,36 @@ describe('components/form/sw-url-field', () => {
         await flushPromises();
 
         expect(wrapper.vm.sslActive).toBe(false);
+    });
+
+    it('should update empty values', async () => {
+        const wrapper = await createWrapper({
+            props: {
+                value: 'https://shopware.com',
+            },
+        });
+        await flushPromises();
+
+        const input = wrapper.find('input');
+        expect(input.element.value).toBe('shopware.com');
+
+        await input.setValue('');
+        await input.trigger('blur');
+        expect(wrapper.vm.currentUrlValue).toBe('');
+        expect(wrapper.emitted('update:value')).toStrictEqual([
+            ['https://shopware.com'],
+            [''],
+        ]);
+    });
+
+    it('injects ariaLabel prop from global injection', async () => {
+        const wrapper = await createWrapper({
+            provide: {
+                ariaLabel: ref('Aria Label'),
+            },
+        });
+        await flushPromises();
+
+        expect(wrapper.find('input').attributes('aria-label')).toBe('Aria Label');
     });
 });

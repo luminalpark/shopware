@@ -9,7 +9,7 @@ use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\System\SalesChannel\Aggregate\SalesChannelDomain\SalesChannelDomainCollection;
 use Shopware\Core\System\Snippet\SnippetCollection;
 
-#[Package('services-settings')]
+#[Package('discovery')]
 class SnippetSetEntity extends Entity
 {
     use EntityCustomFieldsTrait;
@@ -17,26 +17,36 @@ class SnippetSetEntity extends Entity
 
     /**
      * @var string
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $name;
 
     /**
      * @var string
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $baseFile;
 
     /**
      * @var string
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $iso;
 
     /**
      * @var SnippetCollection|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $snippets;
 
     /**
      * @var SalesChannelDomainCollection|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $salesChannelDomains;
 

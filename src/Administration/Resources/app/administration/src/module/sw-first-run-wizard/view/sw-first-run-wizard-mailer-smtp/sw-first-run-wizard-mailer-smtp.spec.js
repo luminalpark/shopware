@@ -1,10 +1,7 @@
-/**
- * @package checkout
- */
 import { mount } from '@vue/test-utils';
 
 /**
- * @package checkout
+ * @sw-package fundamentals@after-sales
  */
 describe('module/sw-first-run-wizard/view/sw-first-run-wizard-mailer-smtp', () => {
     async function createWrapper() {
@@ -32,7 +29,6 @@ describe('module/sw-first-run-wizard/view/sw-first-run-wizard-mailer-smtp', () =
                                     'core.mailerSettings.username': null,
                                     'core.mailerSettings.password': null,
                                     'core.mailerSettings.encryption': 'null',
-                                    'core.mailerSettings.authenticationMethod': 'null',
                                     'core.mailerSettings.senderAddress': null,
                                     'core.mailerSettings.deliveryAddress': null,
                                     'core.mailerSettings.disableDelivery': false,
@@ -122,7 +118,6 @@ describe('module/sw-first-run-wizard/view/sw-first-run-wizard-mailer-smtp', () =
             'core.mailerSettings.username': 'Mad max',
             'core.mailerSettings.password': 'verySafe123',
             'core.mailerSettings.encryption': 'md5',
-            'core.mailerSettings.authenticationMethod': 'login',
             'core.mailerSettings.senderAddress': 'sender@address.com',
             'core.mailerSettings.deliveryAddress': 'delivery@address.com',
             'core.mailerSettings.disableDelivery': true,
@@ -148,7 +143,6 @@ describe('module/sw-first-run-wizard/view/sw-first-run-wizard-mailer-smtp', () =
             'core.mailerSettings.username': 'Mad max',
             'core.mailerSettings.password': 'verySafe123',
             'core.mailerSettings.encryption': 'md5',
-            'core.mailerSettings.authenticationMethod': 'login',
             'core.mailerSettings.senderAddress': 'sender@address.com',
             'core.mailerSettings.deliveryAddress': 'delivery@address.com',
             'core.mailerSettings.disableDelivery': true,

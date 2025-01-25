@@ -18,9 +18,10 @@ use Shopware\Core\Framework\DataAbstractionLayer\Field\ParentAssociationField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\ParentFkField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\StringField;
 use Shopware\Core\Framework\DataAbstractionLayer\FieldCollection;
+use Shopware\Core\Framework\Feature;
 use Shopware\Core\Framework\Log\Package;
 
-#[Package('services-settings')]
+#[Package('fundamentals@after-sales')]
 class RuleConditionDefinition extends EntityDefinition
 {
     final public const ENTITY_NAME = 'rule_condition';
@@ -60,8 +61,8 @@ class RuleConditionDefinition extends EntityDefinition
             new ParentFkField(self::class),
             new JsonField('value', 'value'),
             new IntField('position', 'position'),
-            new ManyToOneAssociationField('rule', 'rule_id', RuleDefinition::class, 'id', false),
-            new ManyToOneAssociationField('appScriptCondition', 'script_id', AppScriptConditionDefinition::class, 'id', true),
+            new ManyToOneAssociationField('rule', 'rule_id', RuleDefinition::class, 'id'),
+            new ManyToOneAssociationField('appScriptCondition', 'script_id', AppScriptConditionDefinition::class, 'id', !Feature::isActive('v6.7.0.0')),
             new ParentAssociationField(self::class, 'id'),
             new ChildrenAssociationField(self::class),
             new CustomFields(),

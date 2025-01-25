@@ -7,7 +7,7 @@ use Shopware\Core\Framework\Log\Package;
 /**
  * Defines the weight for a search query on the entity for this field
  */
-#[Package('core')]
+#[Package('framework')]
 class SearchRanking extends Flag
 {
     final public const ASSOCIATION_SEARCH_RANKING = 0.25;
@@ -17,11 +17,15 @@ class SearchRanking extends Flag
 
     /**
      * @var float
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $ranking;
 
     /**
      * @var bool
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $tokenize;
 

@@ -11,33 +11,43 @@ use Shopware\Core\System\Language\LanguageEntity;
 /**
  * @internal
  */
-#[Package('core')]
+#[Package('framework')]
 class ActionButtonTranslationEntity extends Entity
 {
     use EntityIdTrait;
 
     /**
      * @var string
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $label;
 
     /**
      * @var string
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $appActionButtonId;
 
     /**
      * @var string
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $languageId;
 
     /**
      * @var ActionButtonEntity|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $appActionButton;
 
     /**
      * @var LanguageEntity|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $language;
 

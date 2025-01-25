@@ -7,11 +7,13 @@ use Shopware\Core\System\SystemConfig\Exception\XmlElementNotFoundException;
 use Shopware\Core\System\SystemConfig\Exception\XmlParsingException;
 use Symfony\Component\Config\Util\XmlUtils;
 
-#[Package('core')]
+#[Package('framework')]
 abstract class XmlReader
 {
     /**
      * @var string should be set in instance that extends this class
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $xsdFile;
 

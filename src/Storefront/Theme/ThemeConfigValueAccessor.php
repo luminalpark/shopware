@@ -8,7 +8,7 @@ use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-#[Package('storefront')]
+#[Package('framework')]
 class ThemeConfigValueAccessor
 {
     /**
@@ -60,7 +60,7 @@ class ThemeConfigValueAccessor
         if (!Feature::isActive('cache_rework')) {
             if ($this->fineGrainedCache) {
                 foreach (array_keys($this->keys) as $trace) {
-                    $this->traces[$trace][self::buildName($key)] = true;
+                    $this->traces[$trace]['theme.' . $key] = true;
                 }
             } else {
                 foreach (array_keys($this->keys) as $trace) {

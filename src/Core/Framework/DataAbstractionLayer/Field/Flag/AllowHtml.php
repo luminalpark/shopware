@@ -7,11 +7,13 @@ use Shopware\Core\Framework\Log\Package;
 /**
  * In case a column is allowed to contain HTML-esque data. Beware of injection possibilities
  */
-#[Package('core')]
+#[Package('framework')]
 class AllowHtml extends Flag
 {
     /**
      * @var bool
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $sanitized;
 

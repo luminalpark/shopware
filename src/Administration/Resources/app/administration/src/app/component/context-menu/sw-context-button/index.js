@@ -4,7 +4,7 @@ import './sw-context-button.scss';
 const { Component } = Shopware;
 
 /**
- * @package admin
+ * @sw-package framework
  *
  * @private
  * @status ready
@@ -105,6 +105,12 @@ Component.register('sw-context-button', {
             type: Number,
             required: false,
             default: 1100,
+        },
+
+        ariaLabel: {
+            type: String,
+            required: false,
+            default: 'sw-context-button.ariaLabel',
         },
     },
 

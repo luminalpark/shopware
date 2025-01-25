@@ -5,16 +5,20 @@ namespace Shopware\Storefront\Theme\StorefrontPluginConfiguration;
 use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\Framework\Struct\Struct;
 
-#[Package('storefront')]
+#[Package('framework')]
 class File extends Struct
 {
     /**
      * @var string
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $filepath;
 
     /**
      * @var array<string, string>
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $resolveMapping;
 

@@ -6,11 +6,13 @@ use Shopware\Core\Content\Cms\CmsPageEntity;
 use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\System\SalesChannel\StoreApiResponse;
 
-#[Package('buyers-experience')]
+#[Package('discovery')]
 class CmsRouteResponse extends StoreApiResponse
 {
     /**
      * @var CmsPageEntity
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $object;
 

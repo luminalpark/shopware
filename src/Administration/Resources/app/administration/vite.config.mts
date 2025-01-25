@@ -1,3 +1,7 @@
+/**
+ * @package framework
+ */
+
 import { defineConfig, loadEnv } from 'vite';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import svgLoader from 'vite-svg-loader';
@@ -7,6 +11,7 @@ import * as fs from 'fs';
 import symfonyPlugin from 'vite-plugin-symfony';
 import TwigPlugin from './build/vite-plugins/twigjs-plugin';
 import AssetPlugin from './build/vite-plugins/asset-plugin';
+import AssetPathPlugin from './build/vite-plugins/asset-path-plugin';
 
 console.log('╔════════════════════════════════════════════════╗');
 console.log('║               EXPERIMENTAL VITE BUILD          ║');
@@ -14,6 +19,7 @@ console.log('╚═════════════════════�
 
 process.env = { ...process.env, ...loadEnv('', process.cwd()) };
 process.env.PROJECT_ROOT = process.env.PROJECT_ROOT || path.join(__dirname, '/../../../../../');
+
 if (!process.env.APP_URL) {
     throw new Error('APP_URL is not defined');
 }
@@ -28,7 +34,7 @@ if (fs.existsSync(flagsPath)) {
 export default defineConfig(({ command }) => {
     const isProd = command === 'build';
     const isDev = !isProd;
-    const base = isProd ? '/bundles/administration' : undefined;
+    const base = isProd ? '/bundles/administration/administration' : undefined;
 
     return {
         base,
@@ -46,6 +52,12 @@ export default defineConfig(({ command }) => {
         plugins: (() => {
             // Plugins used for both dev and prod
             const sharedPlugins = [
+                // Shopware plugins: build/vite-plugins
+                TwigPlugin(),
+                AssetPlugin(isProd, __dirname),
+                AssetPathPlugin(),
+
+                svgLoader(),
                 vue({
                     template: {
                         compilerOptions: {
@@ -55,11 +67,6 @@ export default defineConfig(({ command }) => {
                         },
                     },
                 }),
-                svgLoader(),
-
-                // Shopware plugins: build/vite-plugins
-                TwigPlugin(),
-                AssetPlugin(isProd, __dirname),
             ];
 
             if (isDev) {
@@ -101,7 +108,7 @@ export default defineConfig(({ command }) => {
         resolve: {
             alias: [
                 {
-                    find: /vue$/,
+                    find: /^vue$/,
                     replacement: '@vue/compat/dist/vue.esm-bundler.js',
                 },
                 {
@@ -142,7 +149,6 @@ export default defineConfig(({ command }) => {
 
         worker: {
             format: 'es',
-            plugins: [],
             rollupOptions: {
                 output: {
                     format: 'iife',
@@ -154,8 +160,8 @@ export default defineConfig(({ command }) => {
             // The outdir is set to the <project_root>/public/bundles/administration so that
             // the entrypoints.json of the symfony plugin can be read in the index.html.twig template
             outDir: isProd
-                ? path.resolve(__dirname, '../../public/')
-                : path.resolve(process.env.PROJECT_ROOT, 'public/bundles/administration'),
+                ? path.resolve(__dirname, '../../public/administration')
+                : path.resolve(process.env.PROJECT_ROOT as string, 'public/bundles/administration/administration'),
 
             // generate .vite/manifest.json in outDir
             manifest: true,

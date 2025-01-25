@@ -9,13 +9,15 @@ use Shopware\Core\Framework\Log\Package;
 /**
  * @internal
  */
-#[Package('core')]
+#[Package('framework')]
 class TestRuleHelper
 {
     public static function isTestClass(ClassReflection $class): bool
     {
-        if ($class->getParentClass() !== null && $class->getParentClass()->getName() === TestCase::class) {
-            return true;
+        foreach ($class->getParents() as $parent) {
+            if ($parent->getName() === TestCase::class) {
+                return true;
+            }
         }
 
         return false;

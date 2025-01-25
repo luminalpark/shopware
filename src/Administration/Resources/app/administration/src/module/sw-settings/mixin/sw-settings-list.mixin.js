@@ -1,5 +1,5 @@
 /**
- * @package services-settings
+ * @sw-package framework
  */
 const {
     Mixin,
@@ -36,7 +36,7 @@ Mixin.register('sw-settings-list', {
         },
 
         listingCriteria() {
-            const criteria = new Criteria(1, 25);
+            const criteria = new Criteria(this.page, this.limit);
 
             if (this.term) {
                 criteria.setTerm(this.term);

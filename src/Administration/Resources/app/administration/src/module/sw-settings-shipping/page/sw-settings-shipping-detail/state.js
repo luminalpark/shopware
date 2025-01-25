@@ -1,5 +1,5 @@
 /**
- * @package checkout
+ * @sw-package checkout
  * @deprecated tag:v6.7.0 - Will be replaced with Pinia store
  */
 // eslint-disable-next-line sw-deprecation-rules/private-feature-declarations
@@ -10,6 +10,7 @@ export default {
         return {
             shippingMethod: {},
             currencies: [],
+            restrictedRuleIds: [],
         };
     },
 
@@ -19,6 +20,9 @@ export default {
         },
         setCurrencies(state, currencies) {
             state.currencies = currencies;
+        },
+        setRestrictedRuleIds(state, restrictedRuleIds) {
+            state.restrictedRuleIds = restrictedRuleIds;
         },
     },
 
@@ -46,13 +50,6 @@ export default {
                 }
 
                 shippingPriceGroups[key].prices.push(shippingPrice);
-            });
-
-            // Sort prices
-            Object.values(shippingPriceGroups).forEach((shippingPrice) => {
-                shippingPrice.prices.sort((a, b) => {
-                    return a.quantityStart - b.quantityStart;
-                });
             });
 
             return shippingPriceGroups;

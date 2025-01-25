@@ -7,46 +7,62 @@ use Shopware\Core\Framework\DataAbstractionLayer\Pricing\PriceCollection;
 use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\Framework\Struct\Struct;
 
-#[Package('core')]
+#[Package('framework')]
 class CheapestPrice extends Struct
 {
     /**
      * @var bool
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $hasRange;
 
     /**
      * @var string
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $variantId;
 
     /**
      * @var string
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $parentId;
 
     /**
      * @var string|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $ruleId;
 
     /**
      * @var float|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $purchase;
 
     /**
      * @var float|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $reference;
 
     /**
      * @var string|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $unitId;
 
     /**
      * @var PriceCollection
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $price;
 

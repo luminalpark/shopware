@@ -8,21 +8,27 @@ use Shopware\Core\System\Country\CountryCollection;
 use Shopware\Core\System\Salutation\SalutationCollection;
 use Shopware\Storefront\Page\Page;
 
-#[Package('storefront')]
+#[Package('framework')]
 class AddressDetailPage extends Page
 {
     /**
      * @var CustomerAddressEntity|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $address;
 
     /**
      * @var SalutationCollection
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $salutations;
 
     /**
      * @var CountryCollection
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $countries;
 

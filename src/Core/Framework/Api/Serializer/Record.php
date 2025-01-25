@@ -8,41 +8,55 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityDefinition;
 use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\Framework\Struct\Struct;
 
-#[Package('core')]
+#[Package('framework')]
 class Record implements \JsonSerializable
 {
     /**
      * @var string
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $id;
 
     /**
      * @var string
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $type;
 
     /**
      * @var array<string, mixed|null>
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $attributes = [];
 
     /**
      * @var array<string, mixed|null>
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $extensions = [];
 
     /**
      * @var array<string, mixed|null>
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $links = [];
 
     /**
      * @var array<string, mixed|null>
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $relationships = [];
 
     /**
      * @var array<string, mixed|null>
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $meta;
 

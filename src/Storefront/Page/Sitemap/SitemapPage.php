@@ -5,11 +5,13 @@ namespace Shopware\Storefront\Page\Sitemap;
 use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\Framework\Struct\Struct;
 
-#[Package('services-settings')]
+#[Package('discovery')]
 class SitemapPage extends Struct
 {
     /**
      * @var array
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $sitemaps;
 

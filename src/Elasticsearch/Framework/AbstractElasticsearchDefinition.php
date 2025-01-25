@@ -9,7 +9,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityDefinition;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\Log\Package;
 
-#[Package('core')]
+#[Package('framework')]
 abstract class AbstractElasticsearchDefinition
 {
     final public const KEYWORD_FIELD = [
@@ -56,6 +56,9 @@ abstract class AbstractElasticsearchDefinition
         return [];
     }
 
+    /**
+     * @deprecated tag:v6.7.0 - reason:return-type-change - will return BuilderInterface in the future
+     */
     abstract public function buildTermQuery(Context $context, Criteria $criteria): BoolQuery;
 
     /**

@@ -18,6 +18,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -26,7 +27,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
     name: 'theme:dump',
     description: 'Dump the theme configuration',
 )]
-#[Package('storefront')]
+#[Package('framework')]
 class ThemeDumpCommand extends Command
 {
     private readonly Context $context;
@@ -54,6 +55,7 @@ class ThemeDumpCommand extends Command
     {
         $this->addArgument('theme-id', InputArgument::OPTIONAL, 'Theme ID');
         $this->addArgument('domain-url', InputArgument::OPTIONAL, 'Sales channel domain URL');
+        $this->addOption('theme-name', null, InputOption::VALUE_OPTIONAL, 'Technical theme name');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -66,12 +68,17 @@ class ThemeDumpCommand extends Command
 
         $themeId = $input->getArgument('theme-id');
 
-        if (!$themeId) {
-            $helper = $this->getHelper('question');
+        $themeName = $input->getOption('theme-name');
 
+        if ($themeId !== null) {
+            $criteria->setIds([$themeId]);
+        } elseif ($themeName !== null) {
+            $criteria->addFilter(new EqualsFilter('technicalName', $themeName));
+        } else {
             $choices = $this->getThemeChoices();
 
-            if (\count($choices) > 1) {
+            if ($input->isInteractive() && \count($choices) > 1) {
+                $helper = $this->getHelper('question');
                 $question = new ChoiceQuestion('Please select a theme:', $choices);
                 $themeName = $helper->ask($input, $output, $question);
 
@@ -79,8 +86,6 @@ class ThemeDumpCommand extends Command
 
                 $criteria->addFilter(new EqualsFilter('name', $themeName));
             }
-        } else {
-            $criteria->setIds([$themeId]);
         }
 
         $themes = $this->themeRepository->search($criteria, $this->context);
@@ -117,23 +122,26 @@ class ThemeDumpCommand extends Command
         $fs = $this->themeFilesystemResolver->getFilesystemForStorefrontConfig($themeConfig);
 
         $domainUrl = $input->getArgument('domain-url');
-        $domainUrl = $domainUrl ?? $this->askForDomainUrlIfMoreThanOneExists($themeEntity, $input, $output);
+        if ($input->isInteractive()) {
+            $domainUrl = $domainUrl ?? $this->askForDomainUrlIfMoreThanOneExists($themeEntity, $input, $output);
 
-        if ($domainUrl === null) {
-            $this->io->error(\sprintf('No domain URL for theme %s found', $themeEntity->getTechnicalName()));
+            if ($domainUrl === null) {
+                $this->io->error(\sprintf('No domain URL for theme %s found', $themeEntity->getTechnicalName()));
 
-            return self::FAILURE;
+                return self::FAILURE;
+            }
         }
 
-        $dump['domainUrl'] = $domainUrl;
+        $dump['themeId'] = $themeEntity->getId();
+        $dump['technicalName'] = $themeConfig->getTechnicalName();
+        $dump['domainUrl'] = $domainUrl ?? '';
         $dump['basePath'] = $this->stripProjectDir($fs->location);
 
-        file_put_contents(
-            $this->projectDir . \DIRECTORY_SEPARATOR . 'var' . \DIRECTORY_SEPARATOR . 'theme-files.json',
-            json_encode($dump, \JSON_PRETTY_PRINT)
-        );
+        $this->staticFileConfigDumper->dumpConfigInVar('theme-files.json', $dump);
 
         $this->staticFileConfigDumper->dumpConfig($this->context);
+
+        $this->io->writeln(\sprintf('Theme `%s` config dumped to file: %s', $themeEntity->getTechnicalName(), 'theme-files.json'));
 
         return self::SUCCESS;
     }
@@ -144,7 +152,7 @@ class ThemeDumpCommand extends Command
     protected function getThemeChoices(): array
     {
         $choices = [];
-
+        /** @var ThemeCollection $themes */
         $themes = $this->themeRepository->search(new Criteria(), Context::createCLIContext())->getEntities();
 
         foreach ($themes as $theme) {

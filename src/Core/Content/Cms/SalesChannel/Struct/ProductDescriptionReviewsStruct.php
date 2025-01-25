@@ -7,26 +7,34 @@ use Shopware\Core\Content\Product\SalesChannel\SalesChannelProductEntity;
 use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\Framework\Struct\Struct;
 
-#[Package('buyers-experience')]
+#[Package('discovery')]
 class ProductDescriptionReviewsStruct extends Struct
 {
     /**
      * @var string|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $productId;
 
     /**
      * @var bool|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $ratingSuccess;
 
     /**
      * @var ProductReviewResult|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $reviews;
 
     /**
      * @var SalesChannelProductEntity|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $product;
 

@@ -6,11 +6,13 @@ use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Core\System\SalesChannel\StoreApiResponse;
 
-#[Package('core')]
+#[Package('framework')]
 class ContextLoadRouteResponse extends StoreApiResponse
 {
     /**
      * @var SalesChannelContext
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $object;
 

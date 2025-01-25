@@ -6,7 +6,7 @@ const { Criteria } = Shopware.Data;
 
 /**
  * @private
- * @package services-settings
+ * @sw-package fundamentals@after-sales
  * @status ready
  * @description The <u>sw-select-rule-create</u> component is used to create or select a rule.
  * @example-type code-only
@@ -149,14 +149,10 @@ Component.register('sw-select-rule-create', {
         },
 
         isRuleRestricted(rule) {
-            const insideRestrictedRuleIds = this.restrictedRuleIds.includes(rule.id);
-
-            const isRuleRestricted = this.ruleConditionDataProviderService.isRuleRestricted(
-                rule.conditions,
-                this.ruleAwareGroupKey,
+            return (
+                this.restrictedRuleIds.includes(rule.id) ||
+                this.ruleConditionDataProviderService.isRuleRestricted(rule.conditions, this.ruleAwareGroupKey)
             );
-
-            return isRuleRestricted || insideRestrictedRuleIds;
         },
 
         getAdvancedSelectionParameters() {

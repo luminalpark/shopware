@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils';
 
 /**
- * @package checkout
+ * @sw-package checkout
  */
 describe('src/module/sw-extension/page/sw-extension-config.spec', () => {
     let SwExtensionConfig;
@@ -39,6 +39,7 @@ describe('src/module/sw-extension/page/sw-extension-config.spec', () => {
                     'sw-form-field-renderer': true,
                     'sw-inherit-wrapper': true,
                     'sw-card': true,
+                    'sw-app-topbar-button': true,
                 },
                 provide: {
                     shopwareExtensionService: {

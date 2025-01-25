@@ -7,7 +7,7 @@ use Shopware\Core\Content\Category\CategoryException;
 use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\Framework\Struct\Struct;
 
-#[Package('inventory')]
+#[Package('discovery')]
 class TreeItem extends Struct
 {
     /**
@@ -17,11 +17,15 @@ class TreeItem extends Struct
 
     /**
      * @var CategoryEntity|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $category;
 
     /**
      * @var TreeItem[]
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $children;
 

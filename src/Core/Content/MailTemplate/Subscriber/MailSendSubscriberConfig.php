@@ -6,7 +6,7 @@ use Shopware\Core\Content\Flow\Dispatching\Action\SendMailAction;
 use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\Framework\Struct\Struct;
 
-#[Package('buyers-experience')]
+#[Package('after-sales')]
 class MailSendSubscriberConfig extends Struct
 {
     /**
@@ -21,16 +21,22 @@ class MailSendSubscriberConfig extends Struct
 
     /**
      * @var bool
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $skip;
 
     /**
      * @var array<string>
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $documentIds = [];
 
     /**
      * @var array<string>
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $mediaIds = [];
 

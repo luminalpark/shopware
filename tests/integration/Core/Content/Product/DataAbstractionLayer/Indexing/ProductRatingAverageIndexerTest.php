@@ -5,8 +5,11 @@ namespace Shopware\Tests\Integration\Core\Content\Product\DataAbstractionLayer\I
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
+use Shopware\Core\Checkout\Customer\CustomerCollection;
+use Shopware\Core\Content\Product\Aggregate\ProductReview\ProductReviewCollection;
 use Shopware\Core\Content\Product\Aggregate\ProductVisibility\ProductVisibilityDefinition;
 use Shopware\Core\Content\Product\DataAbstractionLayer\ProductIndexer;
+use Shopware\Core\Content\Product\ProductCollection;
 use Shopware\Core\Content\Product\ProductEntity;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Context;
@@ -30,43 +33,34 @@ class ProductRatingAverageIndexerTest extends TestCase
     use IntegrationTestBehaviour;
 
     /**
-     * @var EntityRepository
+     * @var EntityRepository<ProductReviewCollection>
      */
-    private $reviewRepository;
+    private EntityRepository $reviewRepository;
 
     /**
-     * @var EntityRepository
+     * @var EntityRepository<ProductCollection>
      */
-    private $productRepository;
+    private EntityRepository $productRepository;
+
+    private SalesChannelContext $salesChannel;
 
     /**
-     * @var SalesChannelContext
+     * @var EntityRepository<CustomerCollection>
      */
-    private $salesChannel;
+    private EntityRepository $customerRepository;
 
-    /**
-     * @var EntityRepository
-     */
-    private $customerRepository;
+    private Connection $connection;
 
-    /**
-     * @var Connection
-     */
-    private $connection;
-
-    /**
-     * @var ProductIndexer
-     */
-    private $productIndexer;
+    private ProductIndexer $productIndexer;
 
     protected function setUp(): void
     {
-        $this->reviewRepository = $this->getContainer()->get('product_review.repository');
-        $this->productRepository = $this->getContainer()->get('product.repository');
-        $this->customerRepository = $this->getContainer()->get('customer.repository');
-        $this->salesChannel = $this->getContainer()->get(SalesChannelContextFactory::class)->create(Uuid::randomHex(), TestDefaults::SALES_CHANNEL);
-        $this->connection = $this->getContainer()->get(Connection::class);
-        $this->productIndexer = $this->getContainer()->get(ProductIndexer::class);
+        $this->reviewRepository = static::getContainer()->get('product_review.repository');
+        $this->productRepository = static::getContainer()->get('product.repository');
+        $this->customerRepository = static::getContainer()->get('customer.repository');
+        $this->salesChannel = static::getContainer()->get(SalesChannelContextFactory::class)->create(Uuid::randomHex(), TestDefaults::SALES_CHANNEL);
+        $this->connection = static::getContainer()->get(Connection::class);
+        $this->productIndexer = static::getContainer()->get(ProductIndexer::class);
     }
 
     /**
@@ -323,7 +317,7 @@ SQL;
     {
         $customerId = Uuid::randomHex();
         $this->createCustomer($customerId);
-        $salesChannelId = $this->salesChannel->getSalesChannel()->getId();
+        $salesChannelId = $this->salesChannel->getSalesChannelId();
         $languageId = Defaults::LANGUAGE_SYSTEM;
         $title = 'foo';
 
@@ -365,7 +359,7 @@ SQL;
                     'manufacturer' => ['name' => 'test'],
                     'tax' => ['taxRate' => 19, 'name' => 'with id'],
                     'visibilities' => [
-                        ['salesChannelId' => $this->salesChannel->getSalesChannel()->getId(), 'visibility' => ProductVisibilityDefinition::VISIBILITY_ALL],
+                        ['salesChannelId' => $this->salesChannel->getSalesChannelId(), 'visibility' => ProductVisibilityDefinition::VISIBILITY_ALL],
                     ],
                     'categories' => [
                         ['id' => Uuid::randomHex(), 'name' => 'Clothing'],

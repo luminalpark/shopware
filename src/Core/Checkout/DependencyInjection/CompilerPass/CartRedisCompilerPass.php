@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * @deprecated tag:v6.7.0 - reason:becomes-internal - can be renamed to CartStorageCompilerPass
  */
-#[Package('core')]
+#[Package('checkout')]
 class CartRedisCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
@@ -26,6 +26,7 @@ class CartRedisCompilerPass implements CompilerPassInterface
             );
 
             $container->setParameter('shopware.cart.storage.config.dsn', $container->getParameter('shopware.cart.redis_url'));
+            $container->setParameter('shopware.cart.storage.config.connection', null);
 
             $container->removeDefinition(CartPersister::class);
             $container->setAlias(CartPersister::class, RedisCartPersister::class);

@@ -2,6 +2,7 @@
 
 namespace Shopware\Core\Checkout\Cart\LineItem;
 
+use Shopware\Core\Checkout\Cart\CartException;
 use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\Framework\Struct\Struct;
 
@@ -10,16 +11,22 @@ class QuantityInformation extends Struct
 {
     /**
      * @var int
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $minPurchase = 1;
 
     /**
      * @var int|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $maxPurchase;
 
     /**
      * @var int|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $purchaseSteps = 1;
 
@@ -31,7 +38,7 @@ class QuantityInformation extends Struct
     public function setMinPurchase(int $minPurchase): QuantityInformation
     {
         if ($minPurchase < 1) {
-            throw new \UnexpectedValueException('minPurchase must be greater or equal 1');
+            throw CartException::unexpectedValueException('minPurchase must be greater or equal 1');
         }
 
         $this->minPurchase = $minPurchase;
@@ -59,7 +66,7 @@ class QuantityInformation extends Struct
     public function setPurchaseSteps(int $purchaseSteps): QuantityInformation
     {
         if ($purchaseSteps < 1) {
-            throw new \UnexpectedValueException('purchaseSteps must be greater or equal 1');
+            throw CartException::unexpectedValueException('purchaseSteps must be greater or equal 1');
         }
 
         $this->purchaseSteps = $purchaseSteps;

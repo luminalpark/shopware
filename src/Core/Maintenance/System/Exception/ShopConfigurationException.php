@@ -6,8 +6,10 @@ use Shopware\Core\Framework\Log\Package;
 
 /**
  * @deprecated tag:v6.7.0 - Will be removed without replacement as it is not used anymore
+ *
+ * @phpstan-ignore shopware.internalClass
  */
-#[Package('core')]
+#[Package('framework')]
 class ShopConfigurationException extends \RuntimeException
 {
 }

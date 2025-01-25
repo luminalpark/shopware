@@ -10,11 +10,13 @@ use Shopware\Storefront\Page\Page;
 /**
  * @deprecated tag:v6.7.0 - this page is removed as customer default payment method will be removed
  */
-#[Package('storefront')]
+#[Package('framework')]
 class AccountPaymentMethodPage extends Page
 {
     /**
      * @var PaymentMethodCollection
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $paymentMethods;
 

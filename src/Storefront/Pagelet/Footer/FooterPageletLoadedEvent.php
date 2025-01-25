@@ -7,11 +7,13 @@ use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Storefront\Pagelet\PageletLoadedEvent;
 use Symfony\Component\HttpFoundation\Request;
 
-#[Package('storefront')]
+#[Package('framework')]
 class FooterPageletLoadedEvent extends PageletLoadedEvent
 {
     /**
      * @var FooterPagelet
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $pagelet;
 

@@ -10,26 +10,34 @@ use Shopware\Core\Framework\DataAbstractionLayer\FieldSerializer\FieldSerializer
 use Shopware\Core\Framework\Log\Package;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-#[Package('core')]
+#[Package('framework')]
 class DefinitionInstanceRegistry
 {
     /**
      * @var ContainerInterface
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $container;
 
     /**
      * @var array<string, string>
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $repositoryMap;
 
     /**
      * @var array<string, string|class-string<EntityDefinition>>
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $definitions;
 
     /**
      * @var array<class-string<Entity>, EntityDefinition>|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $entityClassMapping;
 

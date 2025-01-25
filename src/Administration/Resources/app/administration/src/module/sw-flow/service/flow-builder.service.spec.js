@@ -1,5 +1,5 @@
 /**
- * @package services-settings
+ * @sw-package after-sales
  */
 
 import FlowBuilderService from 'src/module/sw-flow/service/flow-builder.service';
@@ -338,6 +338,11 @@ describe('module/sw-flow/service/flow-builder.service.js', () => {
         };
         const description = service.getActionDescriptions(data, sequence, translator);
         expect(description).toBe('sw-flow.actions.textStopFlowDescription');
+    });
+
+    it('should be able to return the entity name of an action name', () => {
+        const entityName = service.getEntityNameByAction(ACTION.ADD_ORDER_TAG);
+        expect(entityName).toBe('order');
     });
 
     it('should be able to show customer status description', () => {

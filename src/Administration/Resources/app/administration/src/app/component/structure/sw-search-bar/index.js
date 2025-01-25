@@ -7,7 +7,7 @@ const utils = Shopware.Utils;
 const { cloneDeep } = utils.object;
 
 /**
- * @package admin
+ * @sw-package framework
  *
  * @private
  * @description
@@ -833,10 +833,10 @@ Component.register('sw-search-bar', {
             const module = this.moduleFactory.getModuleByEntityName(entityName);
 
             if (!module) {
-                return '#AEC4DA';
+                return '#5C738A';
             }
 
-            return module.manifest.color || '#AEC4DA';
+            return module.manifest.color || '#5C738A';
         },
 
         getEntityIcon(entityName) {

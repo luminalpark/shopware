@@ -10,7 +10,7 @@ use Shopware\Core\System\Language\LanguageCollection;
 use Shopware\Core\System\Locale\Aggregate\LocaleTranslation\LocaleTranslationCollection;
 use Shopware\Core\System\User\UserCollection;
 
-#[Package('buyers-experience')]
+#[Package('discovery')]
 class LocaleEntity extends Entity
 {
     use EntityCustomFieldsTrait;
@@ -18,31 +18,43 @@ class LocaleEntity extends Entity
 
     /**
      * @var string
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $code;
 
     /**
      * @var string|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $name;
 
     /**
      * @var string|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $territory;
 
     /**
      * @var LocaleTranslationCollection|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $translations;
 
     /**
      * @var UserCollection|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $users;
 
     /**
      * @var LanguageCollection|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $languages;
 

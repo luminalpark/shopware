@@ -7,11 +7,13 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\EntitySearchResult;
 use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\System\SalesChannel\StoreApiResponse;
 
-#[Package('inventory')]
+#[Package('discovery')]
 class CategoryListRouteResponse extends StoreApiResponse
 {
     /**
      * @var EntitySearchResult<CategoryCollection>
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $object;
 

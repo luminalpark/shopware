@@ -7,11 +7,13 @@ use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Storefront\Page\PageLoadedEvent;
 use Symfony\Component\HttpFoundation\Request;
 
-#[Package('storefront')]
+#[Package('framework')]
 class CheckoutCartPageLoadedEvent extends PageLoadedEvent
 {
     /**
      * @var CheckoutCartPage
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $page;
 

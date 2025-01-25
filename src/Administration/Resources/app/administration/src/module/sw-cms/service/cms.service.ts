@@ -1,7 +1,5 @@
 import { reactive } from 'vue';
 import type Criteria from '@shopware-ag/meteor-admin-sdk/es/data/Criteria';
-import type EntityCollection from '@shopware-ag/meteor-admin-sdk/es/_internals/data/EntityCollection';
-import type { Entity } from '@shopware-ag/meteor-admin-sdk/es/_internals/data/Entity';
 
 const { Application } = Shopware;
 
@@ -31,7 +29,7 @@ type CmsSlotData = {
     context?: unknown;
 };
 
-type RuntimeSlot = EntitySchema.Entity<'cms_slot'> & {
+type RuntimeSlot = Entity<'cms_slot'> & {
     config: CmsSlotConfig;
     data: {
         [key: string]: CmsSlotData;
@@ -212,9 +210,33 @@ class CmsService {
         if (typeof this.mappingTypesCache[entityName] === 'undefined') {
             this.mappingTypesCache[entityName] = {};
             this.handlePropertyMappings(schema.properties, this.mappingTypesCache[entityName], entityName);
+            void this.addCustomFieldsToMappingTypes(entityName, this.mappingTypesCache[entityName]!);
         }
 
         return this.mappingTypesCache[entityName];
+    }
+
+    private async addCustomFieldsToMappingTypes(entityName: string, mappings: EntityMappings): Promise<void> {
+        const customFieldRepository = Shopware.Service('repositoryFactory').create('custom_field');
+        const criteria = new Shopware.Data.Criteria(1, 50);
+        criteria.addFilter(Shopware.Data.Criteria.equals('customFieldSet.relations.entityName', entityName));
+        criteria.addFilter(Shopware.Data.Criteria.equals('active', 1));
+        criteria.addFilter(
+            Shopware.Data.Criteria.multi('OR', [
+                Shopware.Data.Criteria.equals('type', 'text'),
+                Shopware.Data.Criteria.equals('type', 'datetime'),
+                Shopware.Data.Criteria.equals('type', 'html'),
+            ]),
+        );
+
+        const customFields = await customFieldRepository.search(criteria, Shopware.Context.api);
+        customFields.forEach((customField: Entity<'custom_field'>) => {
+            const propSchema: Property = {
+                type: customField.type,
+            };
+
+            this.handlePrimitivesMapping(propSchema, mappings, `${entityName}.customFields`, customField.name);
+        });
     }
 
     public getPropertyByMappingPath(entity: unknown, propertyPath: string): unknown {
@@ -358,6 +380,8 @@ class CmsService {
             case 'uuid':
             case 'text':
             case 'date':
+            case 'html':
+            case 'datetime':
                 type = 'string';
                 break;
             case 'float':
@@ -524,7 +548,7 @@ function CmsElementEnrich<EntityName extends keyof EntitySchema.Entities>(
             slotData[configKey] = [];
 
             (slotConfigValue as unknown as string[]).forEach((value) => {
-                (slotData[configKey] as EntitySchema.Entity<EntityName>[]).push(collection.get(value) as Entity<EntityName>);
+                (slotData[configKey] as Entity<EntityName>[]).push(collection.get(value) as Entity<EntityName>);
             });
         } else {
             slotData[configKey] = collection.get(slotConfigValue);
@@ -536,6 +560,6 @@ Application.addServiceProvider('cmsService', () => new CmsService());
 
 /**
  * @private
- * @package buyers-experience
+ * @sw-package buyers-experience
  */
 export { CmsService, type CmsElementConfig, type CmsBlockConfig, type CmsSlotConfig, type RuntimeSlot };

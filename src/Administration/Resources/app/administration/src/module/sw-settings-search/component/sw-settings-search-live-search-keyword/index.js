@@ -1,5 +1,5 @@
 /**
- * @package buyers-experience
+ * @sw-package inventory
  */
 import template from './sw-settings-search-live-search-keyword.html.twig';
 import './sw-settings-search-live-search-keyword.scss';
@@ -31,8 +31,14 @@ export default {
     },
 
     computed: {
+        textIsHighlighted() {
+            return this.text.includes(this.highlightClass);
+        },
+
         parsedSearch() {
-            return `(${this.searchTerm.trim().replace(/ +/g, '|')})`;
+            // escaped regexep
+            const term = this.searchTerm.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            return `(${term.replace(/ +/g, '|')})`;
         },
 
         parsedMsg() {

@@ -1,5 +1,5 @@
 /**
- * @package services-settings
+ * @sw-package checkout
  */
 import template from './sw-bulk-edit-order-documents-generate-invoice.html.twig';
 import './sw-bulk-edit-order-documents-generate-invoice.scss';
@@ -11,6 +11,8 @@ export default {
     template,
 
     compatConfig: Shopware.compatConfig,
+
+    inject: ['feature'],
 
     computed: {
         generateData: {

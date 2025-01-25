@@ -7,11 +7,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Twig\Environment;
 
-#[Package('storefront')]
+#[Package('framework')]
 class ErrorTemplateResolver
 {
     /**
      * @var Environment
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $twig;
 

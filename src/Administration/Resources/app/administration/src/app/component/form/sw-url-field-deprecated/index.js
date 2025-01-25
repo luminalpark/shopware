@@ -12,7 +12,7 @@ const URL_REGEX = {
 };
 
 /**
- * @package admin
+ * @sw-package framework
  *
  * @private
  * @description URL field component which supports a switch for https and http.
@@ -146,6 +146,7 @@ Component.extend('sw-url-field-deprecated', 'sw-text-field-deprecated', {
 
         handleEmptyUrl() {
             this.currentUrlValue = '';
+            this.$emit('update:value', this.url);
         },
 
         validateCurrentValue(value) {

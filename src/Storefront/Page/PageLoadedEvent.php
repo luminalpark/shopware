@@ -10,16 +10,20 @@ use Shopware\Core\Framework\Struct\Struct;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Symfony\Component\HttpFoundation\Request;
 
-#[Package('storefront')]
+#[Package('framework')]
 abstract class PageLoadedEvent extends NestedEvent implements ShopwareSalesChannelEvent
 {
     /**
      * @var SalesChannelContext
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $salesChannelContext;
 
     /**
      * @var Request
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $request;
 

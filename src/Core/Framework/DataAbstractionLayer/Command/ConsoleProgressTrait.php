@@ -9,16 +9,20 @@ use Shopware\Core\Framework\Log\Package;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-#[Package('core')]
+#[Package('framework')]
 trait ConsoleProgressTrait
 {
     /**
      * @var SymfonyStyle|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $io;
 
     /**
      * @var ProgressBar|null
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $progress;
 

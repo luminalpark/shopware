@@ -2,7 +2,7 @@ import './sw-first-run-wizard-mailer-smtp.scss';
 import template from './sw-first-run-wizard-mailer-smtp.html.twig';
 
 /**
- * @package checkout
+ * @sw-package fundamentals@after-sales
  */
 // eslint-disable-next-line sw-deprecation-rules/private-feature-declarations
 export default {
@@ -28,7 +28,6 @@ export default {
                 'core.mailerSettings.username': null,
                 'core.mailerSettings.password': null,
                 'core.mailerSettings.encryption': 'null',
-                'core.mailerSettings.authenticationMethod': 'null',
                 'core.mailerSettings.senderAddress': null,
                 'core.mailerSettings.deliveryAddress': null,
                 'core.mailerSettings.disableDelivery': false,

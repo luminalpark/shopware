@@ -5,11 +5,13 @@ namespace Shopware\Core\Framework\DataAbstractionLayer\Indexing\MessageQueue;
 use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\Framework\MessageQueue\AsyncMessageInterface;
 
-#[Package('core')]
+#[Package('framework')]
 class IterateEntityIndexerMessage implements AsyncMessageInterface
 {
     /**
      * @var string
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $indexer;
 

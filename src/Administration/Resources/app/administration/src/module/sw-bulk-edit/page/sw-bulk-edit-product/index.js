@@ -10,7 +10,7 @@ const { mapState, mapGetters } = Component.getComponentHelper();
 const { cloneDeep } = Shopware.Utils.object;
 
 /**
- * @package services-settings
+ * @sw-package inventory
  */
 // eslint-disable-next-line sw-deprecation-rules/private-feature-declarations
 export default {
@@ -619,7 +619,7 @@ export default {
             return [
                 {
                     name: 'width',
-                    type: 'int',
+                    type: 'float',
                     canInherit: this.isChild,
                     config: {
                         componentName: 'sw-number-field',
@@ -633,7 +633,7 @@ export default {
                 },
                 {
                     name: 'height',
-                    type: 'int',
+                    type: 'float',
                     canInherit: this.isChild,
                     config: {
                         componentName: 'sw-number-field',
@@ -647,7 +647,7 @@ export default {
                 },
                 {
                     name: 'length',
-                    type: 'int',
+                    type: 'float',
                     canInherit: this.isChild,
                     config: {
                         componentName: 'sw-number-field',
@@ -661,7 +661,7 @@ export default {
                 },
                 {
                     name: 'weight',
-                    type: 'int',
+                    type: 'float',
                     canInherit: this.isChild,
                     config: {
                         componentName: 'sw-number-field',
@@ -675,7 +675,7 @@ export default {
                 },
                 {
                     name: 'purchaseUnit',
-                    type: 'int',
+                    type: 'float',
                     canInherit: this.isChild,
                     config: {
                         componentName: 'sw-number-field',
@@ -723,7 +723,7 @@ export default {
                 },
                 {
                     name: 'referenceUnit',
-                    type: 'int',
+                    type: 'float',
                     canInherit: this.isChild,
                     config: {
                         componentName: 'sw-number-field',

@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * @internal
  */
-#[Package('services-settings')]
+#[Package('fundamentals@after-sales')]
 class RuleValidator implements EventSubscriberInterface
 {
     /**
@@ -255,6 +255,7 @@ class RuleValidator implements EventSubscriberInterface
         }, $commandQueue);
 
         $criteria = new Criteria($ids);
+        $criteria->addAssociation('appScriptCondition');
         $criteria->setLimit(null);
 
         return $this->ruleConditionRepository->search($criteria, $context)->getEntities();

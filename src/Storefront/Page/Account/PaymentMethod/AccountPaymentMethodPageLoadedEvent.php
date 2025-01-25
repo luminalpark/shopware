@@ -11,11 +11,13 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @deprecated tag:v6.7.0 - this page is removed as customer default payment method will be removed
  */
-#[Package('storefront')]
+#[Package('framework')]
 class AccountPaymentMethodPageLoadedEvent extends PageLoadedEvent
 {
     /**
      * @var AccountPaymentMethodPage
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $page;
 

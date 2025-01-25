@@ -2,7 +2,7 @@ import template from './sw-order-list.html.twig';
 import './sw-order-list.scss';
 
 /**
- * @package checkout
+ * @sw-package checkout
  */
 
 const { Mixin } = Shopware;
@@ -147,7 +147,7 @@ export default {
                     placeholder: this.$tc('sw-order.filters.orderNumberFilter.placeholder'),
                     valueProperty: 'key',
                     labelProperty: 'key',
-                    criteriaFilterType: 'equals',
+                    criteriaFilterType: 'equalsAny',
                 },
                 'sales-channel-filter': {
                     property: 'salesChannel',

@@ -15,7 +15,7 @@ async function createWrapper() {
                     sync: true,
                 }),
                 'sw-button-deprecated': await wrapTestComponent('sw-button-deprecated', { sync: true }),
-                i18n: true,
+                'i18n-t': true,
                 'sw-icon': true,
                 'sw-label': true,
                 'router-link': true,
@@ -32,7 +32,7 @@ async function createWrapper() {
 }
 
 /**
- * @package checkout
+ * @sw-package checkout
  */
 describe('src/module/sw-extension-component/sw-extension-adding-failed', () => {
     it('passes correct props to sw-circle-icon', async () => {

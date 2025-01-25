@@ -6,16 +6,20 @@ use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\Event\NestedEvent;
 use Shopware\Core\Framework\Log\Package;
 
-#[Package('inventory')]
+#[Package('discovery')]
 class CategoryIndexerEvent extends NestedEvent
 {
     /**
      * @var list<string>
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $ids;
 
     /**
      * @var Context
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $context;
 

@@ -2,6 +2,7 @@
 
 namespace Shopware\Tests\Unit\Core\Framework\Telemetry\Metrics\Metric;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\Framework\Telemetry\Metrics\Config\MetricConfig;
@@ -12,8 +13,8 @@ use Shopware\Core\Framework\Telemetry\Metrics\Metric\Type;
 /**
  * @internal
  */
-#[\PHPUnit\Framework\Attributes\CoversClass(Metric::class)]
-#[Package('core')]
+#[CoversClass(Metric::class)]
+#[Package('framework')]
 class MetricTest extends TestCase
 {
     public function testInvokeRemovesDisallowedLabels(): void

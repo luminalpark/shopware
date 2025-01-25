@@ -1,5 +1,5 @@
 /**
- * @package services-settings
+ * @sw-package checkout
  */
 import { mount } from '@vue/test-utils';
 import swBulkEditState from 'src/module/sw-bulk-edit/state/sw-bulk-edit.state';
@@ -10,6 +10,7 @@ async function createWrapper() {
             stubs: {
                 'sw-datepicker': true,
                 'sw-textarea-field': true,
+                'sw-switch-field': true,
             },
         },
     });

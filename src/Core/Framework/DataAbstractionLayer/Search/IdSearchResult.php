@@ -10,18 +10,22 @@ use Shopware\Core\Framework\Struct\Struct;
 /**
  * @final
  */
-#[Package('core')]
+#[Package('framework')]
 class IdSearchResult extends Struct
 {
     use StateAwareTrait;
 
     /**
      * @var array<string, array<string, mixed>>
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $data;
 
     /**
      * @var list<string>|list<array<string, string>>
+     *
+     * @deprecated tag:v6.7.0 - Will be natively typed
      */
     protected $ids;
 

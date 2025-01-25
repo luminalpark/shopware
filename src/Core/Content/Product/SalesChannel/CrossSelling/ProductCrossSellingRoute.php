@@ -20,6 +20,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Cache\EntityCacheKeyGenerator;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\NotFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Sorting\FieldSorting;
 use Shopware\Core\Framework\Log\Package;
 use Shopware\Core\Framework\Plugin\Exception\DecorationPatternException;
@@ -117,6 +118,7 @@ class ProductCrossSellingRoute extends AbstractProductCrossSellingRoute
         );
 
         $criteria->addFilter(...$filters)
+            ->addFilter(new NotFilter(NotFilter::CONNECTION_AND, [new EqualsFilter('product.id', $crossSelling->getProductId())]))
             ->setOffset(0)
             ->setLimit($crossSelling->getLimit())
             ->addSorting($crossSelling->getSorting());
@@ -158,7 +160,7 @@ class ProductCrossSellingRoute extends AbstractProductCrossSellingRoute
         $ids = array_values($crossSelling->getAssignedProducts()->getProductIds());
 
         $filter = new ProductAvailableFilter(
-            $context->getSalesChannel()->getId(),
+            $context->getSalesChannelId(),
             ProductVisibilityDefinition::VISIBILITY_LINK
         );
 
@@ -193,7 +195,7 @@ class ProductCrossSellingRoute extends AbstractProductCrossSellingRoute
 
     private function handleAvailableStock(Criteria $criteria, SalesChannelContext $context): Criteria
     {
-        $salesChannelId = $context->getSalesChannel()->getId();
+        $salesChannelId = $context->getSalesChannelId();
         $hide = $this->systemConfigService->get('core.listing.hideCloseoutProductsWhenOutOfStock', $salesChannelId);
 
         if (!$hide) {

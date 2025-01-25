@@ -3,7 +3,7 @@ import './sw-order-detail.scss';
 import swOrderDetailState from '../../state/order-detail.store';
 
 /**
- * @package checkout
+ * @sw-package checkout
  */
 
 const { State, Mixin, Utils } = Shopware;
@@ -135,7 +135,7 @@ export default {
 
             criteria.getAssociation('lineItems.children').addSorting(Criteria.sort('position', 'ASC'));
 
-            criteria.addAssociation('salesChannel');
+            criteria.addAssociation('salesChannel.domains');
 
             criteria
                 .addAssociation('addresses.country')
@@ -265,6 +265,21 @@ export default {
                 this.order.lineItems = this.order.lineItems.filter(
                     (lineItem) => !this.promotionsToDelete.includes(lineItem.id),
                 );
+            }
+
+            if (this.order.lineItems.length === 0) {
+                this.createNotificationError({
+                    message: this.$tc('sw-order.detail.messageEmptyLineItems'),
+                });
+
+                this.createNewVersionId().then(() => {
+                    State.commit('swOrderDetail/setLoading', [
+                        'order',
+                        false,
+                    ]);
+                });
+
+                return;
             }
 
             if (this.deliveryDiscountsToDelete.length > 0) {
